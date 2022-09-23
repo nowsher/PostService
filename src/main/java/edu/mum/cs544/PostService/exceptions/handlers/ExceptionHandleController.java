@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.FileSystemException;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.RollbackException;
@@ -19,34 +20,20 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionHandleController {
+public class ExceptionHandleController  /*extends ResponseEntityExceptionHandler*/ {
 
     @ExceptionHandler
-    public ResponseEntity<Object> exception(Exception ex) {// IllegalArgumentException ex, ConstraintViolationException
-        String msg = ex.getMessage();
-        // if(ex instanceof MethodArgumentNotValidException) {
-        //     List<FieldError> fieldErrors = ((MethodArgumentNotValidException) ex).getBindingResult().getFieldErrors();
-        //     StringBuilder sb = new StringBuilder(); 
-        //     for(FieldError fieldError: fieldErrors){
-        //         sb.append(fieldError.getDefaultMessage());
-        //         sb.append(";");
-        //     }
-        //     msg = sb.toString();
-        // }
-        return new ResponseEntity<Object>(msg, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> exception(Exception ex) {
+        // String msg =" Invalid request.";
+        return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     // @ExceptionHandler
     // public ResponseEntity<Object> exception(IllegalArgumentException exception, ConstraintViolationException ex) {
     //     return new ResponseEntity<>(io.getMessage(), HttpStatus.BAD_REQUEST);
-    // }
-
-    // @ExceptionHandler({ FileSystemException.class, RemoteException.class })
-    // public String handle(Exception e) {
-    //     // do something with the exception
-    //     return "exception";
     // }
 
 }
