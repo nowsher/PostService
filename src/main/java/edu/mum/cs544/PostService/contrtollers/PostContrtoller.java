@@ -2,12 +2,19 @@ package edu.mum.cs544.PostService.contrtollers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -15,48 +22,41 @@ import edu.mum.cs544.PostService.model.Post;
 import edu.mum.cs544.PostService.services.PostService;
 
 @RestController
-// @RequestMapping("/posts")
+@RequestMapping("/posts")
 public class PostContrtoller {
 
     @Autowired
-    private PostService  postService;
+    private PostService postService;    
 
-    // @GetMapping("/")
-    // public RedirectView redirectRoot() {
-    //     return new RedirectView("/posts");
-    // }
-
-    @GetMapping(value = "/posts", produces = "application/json")
-    public List<Post> getAll() {
-        return postService.getAll();
+    @GetMapping
+    public List<Post> getAllByUserId(@RequestParam(required = false) Integer userId) {
+        if (userId == null) {
+            return postService.getAll();
+        }
+        return postService.getAllByUserId(userId.intValue());
     }
 
-    @GetMapping(value = "/posts/{id}")
+    @GetMapping(value = "/{id}")
     public Post get(@PathVariable int id) {
         return postService.get(id);
     }
 
-    @PostMapping(value = "/posts/add", consumes = "application/json")
-    public RedirectView add(@RequestBody Post post) {
-        postService.add(post);
-        Long id = post.getId();
-        return new RedirectView("/posts/" + id);
+    @PostMapping(value = "/add")
+    public ResponseEntity<Object> add(@RequestBody Post post) {
+        postService.add(post);        
+        return new ResponseEntity<>("{ \"Message\": \"Post was added.\"}", HttpStatus.OK);
     }
 
-    @PostMapping(value = "/posts/update/{id}", consumes = "application/json")
-    public String update(@PathVariable long id, @RequestBody Post post) {
-        if (id != post.getId()) {
-            throw new IllegalArgumentException();
-        }
-        postService.update(post);
-        return "{ \"post updated\": " + id + "}";
+    @PostMapping(value = "/update/{id}")
+    public ResponseEntity<Object> update(@PathVariable int id, @RequestBody Post post) {
+        postService.update(post,id);                
+        return new ResponseEntity<>("{ \"Message\": \"Post was updated.\"}", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/posts/delete/{id}")
-    public String delete(@PathVariable int id) {
+    @GetMapping(value = "/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable int id) {
         postService.delete(id);
-        return "{ \"post deleted\": " + id + "}";
+        return new ResponseEntity<>("{ \"Message\": \"Post was deleted.\"}", HttpStatus.OK);
     }
-
 
 }

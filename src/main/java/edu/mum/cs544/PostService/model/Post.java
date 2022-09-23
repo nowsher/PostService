@@ -1,9 +1,14 @@
 package edu.mum.cs544.PostService.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,10 +21,20 @@ import lombok.NoArgsConstructor;
 public class Post {
     @Id
     @GeneratedValue
-    private Long id;
+    private int id;
+
+    @NotNull(message="Post title can not be null")
+    @NotBlank
     private String title;
-    // private String author;
-    // @Lob
+
+    @NotNull 
+    private Date dateLastUpdated;
+
+    @Lob
+    @NotNull
+    @NotBlank
     private String text;    
-    private Long userId;
+
+    @Positive
+    private int userId;
 }

@@ -20,6 +20,10 @@ public class PostService {
         return postDao.findAll();
     }
 
+    public List<Post> getAllByUserId(int userId) {
+        return postDao.findAllByUserId(userId);
+    }
+
     public void add(Post post) {
         postDao.save(post);
     }
@@ -28,7 +32,10 @@ public class PostService {
         return postDao.findById(id).get();
     }
 
-    public void update(Post post) {
+    public void update(Post post,int id) {
+        if (id != post.getId()) {
+            throw new IllegalArgumentException();
+        }
         postDao.save(post);
     }
 
