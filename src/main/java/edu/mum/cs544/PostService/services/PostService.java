@@ -34,7 +34,7 @@ public class PostService {
 
     public void update(Post post,int id) {
         if (id != post.getId()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid post id.");
         }
         postDao.save(post);
     }

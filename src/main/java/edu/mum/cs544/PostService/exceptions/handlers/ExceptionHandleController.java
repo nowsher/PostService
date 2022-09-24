@@ -25,15 +25,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ExceptionHandleController  /*extends ResponseEntityExceptionHandler*/ {
 
-    @ExceptionHandler
-    public ResponseEntity<Object> exception(Exception ex) {
-        // String msg =" Invalid request.";
-        return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
     // @ExceptionHandler
     // public ResponseEntity<Object> exception(IllegalArgumentException exception, ConstraintViolationException ex) {
-    //     return new ResponseEntity<>(io.getMessage(), HttpStatus.BAD_REQUEST);
+    //     return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     // }
+
+    @ExceptionHandler
+    public ResponseEntity<String> exception(Exception ex) {        
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 
 }
