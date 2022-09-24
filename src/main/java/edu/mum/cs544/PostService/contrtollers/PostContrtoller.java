@@ -22,7 +22,7 @@ import edu.mum.cs544.PostService.model.Post;
 import edu.mum.cs544.PostService.services.PostService;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/v1/posts")
 public class PostContrtoller {
 
     @Autowired
