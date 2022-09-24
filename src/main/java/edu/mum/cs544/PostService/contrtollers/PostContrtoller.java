@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import edu.mum.cs544.PostService.dtos.ResponseDto;
 import edu.mum.cs544.PostService.model.Post;
 import edu.mum.cs544.PostService.services.PostService;
 
@@ -29,34 +30,34 @@ public class PostContrtoller {
     private PostService postService;    
 
     @GetMapping
-    public List<Post> getAllByUserId(@RequestParam(required = false) Integer userId) {
+    public ResponseDto<List<Post>> getAllByUserId(@RequestParam(required = false) Integer userId) {
         if (userId == null) {
-            return postService.getAll();
+            return new ResponseDto<>("List posts", false, postService.getAll() , null);            
         }
-        return postService.getAllByUserId(userId.intValue());
+        return new ResponseDto<>("List posts", false, postService.getAllByUserId(userId.intValue()) , null);                
     }
 
     @GetMapping(value = "/{id}")
-    public Post get(@PathVariable int id) {
-        return postService.get(id);
+    public ResponseDto<Post> get(@PathVariable int id) {
+        return new ResponseDto<>("Get a Post", false, postService.get(id) , null);        
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<Object> add(@RequestBody Post post) {
+    public ResponseDto<Post> add(@RequestBody Post post) {
         postService.add(post);        
-        return new ResponseEntity<>("{ \"Message\": \"Post was added.\"}", HttpStatus.OK);
+        return new ResponseDto<Post>("Post added", false, post , null);        
     }
 
     @PostMapping(value = "/update/{id}")
-    public ResponseEntity<Object> update(@PathVariable int id, @RequestBody Post post) {
+    public ResponseDto<Post> update(@PathVariable int id, @RequestBody Post post) {
         postService.update(post,id);                
-        return new ResponseEntity<>("{ \"Message\": \"Post was updated.\"}", HttpStatus.OK);
+        return new ResponseDto<Post>("Post was updated", false, post, null);        
     }
 
     @GetMapping(value = "/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable int id) {
+    public ResponseDto<String> delete(@PathVariable int id) {
         postService.delete(id);
-        return new ResponseEntity<>("{ \"Message\": \"Post was deleted.\"}", HttpStatus.OK);
+        return new ResponseDto<String>("Post was deleted", false, null , null);
     }
 
 }
