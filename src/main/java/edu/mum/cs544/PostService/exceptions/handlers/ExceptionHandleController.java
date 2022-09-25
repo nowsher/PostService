@@ -23,12 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionHandleController  /*extends ResponseEntityExceptionHandler*/ {
-
-    // @ExceptionHandler
-    // public ResponseEntity<Object> exception(IllegalArgumentException exception, ConstraintViolationException ex) {
-    //     return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    // }
+public class ExceptionHandleController {
 
     @ExceptionHandler
     public ResponseEntity<String> exception(Exception ex) {        
