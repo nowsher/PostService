@@ -25,7 +25,7 @@ public class Post {
     @GeneratedValue
     private int id;
 
-    @NotNull(message="Post title can not be null")
+    @NotNull
     @NotBlank
     private String title;
 
