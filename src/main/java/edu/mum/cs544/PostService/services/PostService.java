@@ -17,55 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class PostService {
-    @Autowired
-    private IPostDao postDao;
+public interface PostService {
 
-    public List<Post> getAll() {
-        return postDao.findAll();
-    }
-
-    public List<Post> getAllByUserId(int userId) {
-        return postDao.findAllByUserId(userId);
-    }
-
-    public void add(Post post) {
-        try {
-            post.setDateLastUpdated(new Date());
-            postDao.save(post);
-        } catch (Exception e) {
-            throw new PostDataException("Invalid post data.");
-        }
-    }
-
-    public Post get(int id) {
-        return postDao.findById(id).get();
-    }
-
-    public void update(Post post, int id) {
-        if (id != post.getId()) {
-            throw new IllegalArgumentException("Invalid post id.");
-        }
-        try {
-            post.setDateLastUpdated(new Date());
-            Optional<Post> postTmp = postDao.findById(id);
-            if (!postTmp.isEmpty()) {
-                postDao.save(post);
-            } else {
-                throw new IllegalArgumentException("Invalid post id.");
-            }
-        } catch (Exception e) {
-            throw new PostDataException("Invalid post data.");
-        }
-    }
-
-    public void delete(int id) {
-        try {
-            postDao.deleteById(id);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid post id.");
-        }
-
-    }
-
+    public List<Post> getAllByUserId(int userId);
+    public List<Post> getAll();
+    public void add(Post post);
+    public Post get(int id);
+    public void update(Post post, int id);
+    public void delete(int id);
 }
